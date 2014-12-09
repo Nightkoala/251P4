@@ -55,6 +55,6 @@ public class ConnectFour{
 		model.setModelListener( view );
 		view.setViewListener( proxy );
 		proxy.setModelListener( model );
-		proxy.join( playerName );
+		proxy.join( null, playerName );
 	}//end main
 }//end ConnectFour

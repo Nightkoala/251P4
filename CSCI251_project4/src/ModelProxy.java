@@ -51,7 +51,7 @@ public class ModelProxy implements ViewListener {
 	}//end setModelListener
 	
 	@Override
-	public void join( String n ) throws IOException {
+	public void join( ViewProxy proxy, String n ) throws IOException {
 		out.printf( "join %s\n", n );
 	}//end join
 

@@ -12,3 +12,6 @@
 /ViewListener.class
 /ViewProxy$ReaderThread.class
 /ViewProxy.class
+/ConnectFourServer.class
+/SessionManager.class
+/ConnectFourModel.class

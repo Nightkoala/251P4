@@ -19,7 +19,7 @@ public interface ViewListener {
 	 * 
 	 * @throws IOException	Thrown if an I/O error occurred.
 	 */
-	public void join( String n ) throws IOException;
+	public void join( ViewProxy proxy, String n ) throws IOException;
 	
 	/**
 	 * Send notification to server notifying that a player has made a move.

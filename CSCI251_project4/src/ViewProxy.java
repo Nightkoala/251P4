@@ -101,7 +101,7 @@ public class ViewProxy implements ModelListener {
 					switch( cmd.charAt( 0 ) ) {
 						case 'j':
 							name = cmd.substring( 5 );
-							viewListener.join( name );
+							viewListener.join( ViewProxy.this, name );
 							break;
 						case 'a':
 							p = Character.getNumericValue( cmd.charAt( 5 ) );
