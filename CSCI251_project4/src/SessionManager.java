@@ -28,11 +28,13 @@ public class SessionManager implements ViewListener {
 	public synchronized void join( ViewProxy proxy, String session) throws IOException {
 		ConnectFourModel model = sessions.get( numSessions );
 		if( model == null ) {
+			System.out.printf("%s join 1\n", session);
 			model = new ConnectFourModel();
 			model.setPlayer1Name( session );
 			sessions.add( numSessions, model );
 		}//end if
 		else {
+			System.out.printf("%s join 2\n", session);
 			model.setPlayer2Name( session );
 			numSessions++;
 		}//end else
