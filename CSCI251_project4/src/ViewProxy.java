@@ -101,6 +101,10 @@ public class ViewProxy implements ModelListener {
 					String name;
 					int p, c;
 					String cmd = in.readLine();
+					if( cmd == null ) {
+						viewListener.add(-1, -1);
+						break;
+					}//end if
 					switch( cmd.charAt( 0 ) ) {
 						case 'j':
 							name = cmd.substring( 5 );

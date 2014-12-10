@@ -82,6 +82,14 @@ public class ConnectFourModel implements ViewListener {
 	@Override
 	public void add(int p, int c) throws IOException {
 		// update board state
+		if( p == -1 ) {
+			for( int i = 0 ; i < 2 ; i++ ) {
+				ModelListener listener = listeners[i];
+				try {
+					listener.turn(-1);
+				} catch( IOException e ) {}//end try/catch
+			}//end for i
+		}//end if
 		// find r
 		if( !gameWon ) {
 			int rr = -1;
@@ -121,11 +129,9 @@ public class ConnectFourModel implements ViewListener {
 					try {
 						if( p == 1 ) {
 							listener.turn( 2 );
-							System.out.println("Turn 2");
 						}//end if
 						else if( p == 2 ) {
 							listener.turn( 1 );
-							System.out.println("Turn 1");
 						}//end else if
 					} catch ( IOException e ) {}//end try catch
 				}//end for i
