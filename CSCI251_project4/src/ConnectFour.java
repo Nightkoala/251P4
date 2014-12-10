@@ -8,7 +8,6 @@
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.DatagramSocket;
 
 public class ConnectFour{
@@ -56,9 +55,6 @@ public class ConnectFour{
 		String playerName = args[4];
 		
 		DatagramSocket mailbox = new DatagramSocket( new InetSocketAddress( clientHost, clientPort ) );
-		
-//		Socket socket = new Socket();
-//		socket.connect( new InetSocketAddress( host, port ) );
 		
 		C4ModelClone model = new C4ModelClone();
 		C4UI view = new C4UI( model.getBoard(), playerName );
