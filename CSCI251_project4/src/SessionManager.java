@@ -31,14 +31,17 @@ public class SessionManager implements ViewListener {
 		if( model == null ) {
 			model = new ConnectFourModel();
 			model.setPlayer1Name( session );
+			model.incNumPlayers();
 			sessions.add( numSessions, model );
 		}//end if
 		else {
 			model.setPlayer2Name( session );
+			model.incNumPlayers();
 			numSessions++;
 		}//end else
 		model.addModelListener( proxy );
 		proxy.setViewListener( model );
+		model.join( null, session );
 	}//end join
 
 	@Override

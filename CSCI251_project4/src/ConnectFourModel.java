@@ -7,18 +7,17 @@
  */
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 public class ConnectFourModel implements ViewListener {
 	
 	// Hidden Data Members
 	
 	private C4Board board = new C4Board();
-	private LinkedList<ModelListener> listeners =
-		new LinkedList<ModelListener>();
+	private ModelListener[] listeners =
+		new ModelListener[2];
 	private String player1Name = null;
 	private String player2Name = null;
+	private int numPlayers = 0;
 	
 	// Constructor
 	
@@ -41,6 +40,9 @@ public class ConnectFourModel implements ViewListener {
 	public void setPlayer2Name( String n ) {
 		this.player2Name = n;
 	}//end setPlayer2Name
+	public void incNumPlayers() {
+		this.numPlayers++;
+	}//end incNumPlayers
 	
 	public synchronized void addModelListener( ModelListener modelListener ) {
 		try {
@@ -54,12 +56,27 @@ public class ConnectFourModel implements ViewListener {
 					}//end else if
 				}//end for c
 			}//end for r
-			listeners.add( modelListener );
+			listeners[numPlayers] = modelListener;
 		} catch( IOException e ) {}//end try/catch
 	}//end addModelListener
 
 	@Override
-	public void join(ViewProxy proxy, String n) throws IOException {}//end join
+	public void join(ViewProxy proxy, String n) throws IOException {
+		if( n == player1Name ) {
+			listeners[0].number( 1 );
+			listeners[0].name( 1, n );
+		}//end if
+		else if( n == player2Name ) {
+			ModelListener ml1 = listeners[0];
+			ModelListener ml2 = listeners[1];
+			ml1.name( 2, player2Name );
+			ml1.turn( 1 );
+			ml2.number( 2 );
+			ml2.name( 1, player1Name );
+			ml2.name( 2, player2Name );
+			ml2.turn( 1 );
+		}//end else if
+	}//end join
 
 	@Override
 	public void add(int p, int c) throws IOException {
@@ -73,30 +90,24 @@ public class ConnectFourModel implements ViewListener {
 				break;
 			}//end if
 		}//end for r
-		Iterator<ModelListener> iter = listeners.iterator();
-		while( iter.hasNext() ) {
-			ModelListener listener = iter.next();
+		for( int i = 0 ; i < 2 ; i++ ) {
+			ModelListener listener = listeners[i];
 			try {
 				if( rr != -1 ) {
 					listener.add(p, rr, c);
 				}//end if
-			} catch( IOException e ) {
-				iter.remove();
-			}//end try/catch
-		}//end while
+			} catch( IOException e ) {}//end try/catch
+		}//end for i
 	}//end add
 
 	@Override
 	public void clear() throws IOException {
 		board.clear();
-		Iterator<ModelListener> iter = listeners.iterator();
-		while( iter.hasNext() ) {
-			ModelListener listener = iter.next();
+		for( int i = 0 ; i < numPlayers ; i++ ) {
+			ModelListener listener = listeners[i];
 			try {
 				listener.clear();
-			} catch( IOException e ) {
-				iter.remove();
-			}//end try/catch
-		}//end while
+			} catch( IOException e ) {}//end try/catch
+		}//end for i
 	}//end clear
 }//end ConnectFourModel class
