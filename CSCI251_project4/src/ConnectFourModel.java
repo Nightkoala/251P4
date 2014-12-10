@@ -60,15 +60,6 @@ public class ConnectFourModel implements ViewListener {
 			listeners[numPlayers] = modelListener;
 		} catch( IOException e ) {}//end try/catch
 	}//end addModelListener
-	
-//	public static void printBoard( C4Board b) {
-//		for( int r = 0 ; r < C4Board.ROWS ; r++ ) {
-//			for( int c = 0 ; c < C4Board.COLS ; c++ ) {
-//				System.out.printf("%d ", b.getSpot(r, c));
-//			}//end for c
-//			System.out.println();
-//		}//end for r
-//	}//end printBoard
 
 	@Override
 	public void join(ViewProxy proxy, String n) throws IOException {
@@ -124,7 +115,7 @@ public class ConnectFourModel implements ViewListener {
 				}//end for i
 			}//end if
 			// not game over
-			else {
+			else if( winner == null ) {
 				for( int i = 0 ; i < 2 ; i++ ) {
 					ModelListener listener = listeners[i];
 					try {
@@ -138,7 +129,7 @@ public class ConnectFourModel implements ViewListener {
 						}//end else if
 					} catch ( IOException e ) {}//end try catch
 				}//end for i
-			}//end else
+			}//end else if
 		}//end if
 	}//end add
 
