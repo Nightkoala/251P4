@@ -92,7 +92,6 @@ public class ConnectFourModel implements ViewListener {
 		// update board state
 		// find r
 		int rr = -1;
-		printBoard( board );
 		for( int r = 5 ; r >= 0 ; r-- ) {
 			if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
 				board.setSpot(r, c, p);
@@ -100,6 +99,7 @@ public class ConnectFourModel implements ViewListener {
 				break;
 			}//end if
 		}//end for r
+		// notify players of board change
 		for( int i = 0 ; i < 2 ; i++ ) {
 			ModelListener listener = listeners[i];
 			try {
@@ -108,6 +108,32 @@ public class ConnectFourModel implements ViewListener {
 				}//end if
 			} catch( IOException e ) {}//end try/catch
 		}//end for i
+		
+		// notify players of player turn
+		int[] winner = board.hasWon();
+		// if game over
+		if( winner != null ) {
+			for( int i = 0 ; i < 2 ; i++ ) {
+				ModelListener listener = listeners[i];
+				try {
+					listener.turn( 0 );
+				} catch ( IOException e ) {}//end try/catch
+			}//end for i
+		}//end if
+		// not game over
+		else {
+			for( int i = 0 ; i < 2 ; i++ ) {
+				ModelListener listener = listeners[i];
+				try {
+					if( p == 1 ) {
+						listener.turn( 2 );
+					}//end if
+					else if( p == 2 ) {
+						listener.turn( 1 );
+					}//end else if
+				} catch ( IOException e ) {}//end try catch
+			}//end for i
+		}//end else
 	}//end add
 
 	@Override
