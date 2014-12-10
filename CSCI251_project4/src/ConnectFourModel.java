@@ -151,5 +151,11 @@ public class ConnectFourModel implements ViewListener {
 				listener.clear();
 			} catch( IOException e ) {}//end try/catch
 		}//end for i
+		for( int i = 0 ; i < 2 ; i++ ) {
+			ModelListener listener = listeners[i];
+			try {
+				listener.turn(1);
+			} catch( IOException e ) {}//end try/catch
+		}//end for i
 	}//end clear
 }//end ConnectFourModel class
