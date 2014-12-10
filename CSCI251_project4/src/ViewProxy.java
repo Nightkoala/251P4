@@ -65,7 +65,7 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void name( int p, String n ) throws IOException {
-		System.out.printf("sending -- name %p %s\n", p, n);
+		System.out.printf("sending -- name %d %s\n", p, n);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'n' );
@@ -80,7 +80,7 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void turn( int p ) throws IOException {
-		System.out.printf("sending -- turn %p\n", p);
+		System.out.printf("sending -- turn %d\n", p);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 't' );
