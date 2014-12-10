@@ -19,6 +19,10 @@ public class C4Board implements C4BoardIntf {
 	
 	// Methods
 	
+	public int getSpot( int r, int c ) {
+		return this.spot[r][c];
+	}//end getSpot
+	
 	/**
 	 * Places a players 'marker' on the specified tile in the board.
 	 * 
@@ -29,6 +33,7 @@ public class C4Board implements C4BoardIntf {
 	public synchronized void setSpot( int r, int c, int p ) {
 		spot[r][c] = p;
 	}//end setSpot
+	
 	
 	/**
 	 * Clears the current game board, sets all of the tiles to 0.
