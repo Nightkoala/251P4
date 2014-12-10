@@ -84,7 +84,7 @@ public class ConnectFourModel implements ViewListener {
 		// find r
 		int rr = -1;
 		for( int r = 5 ; r >= 0 ; r-- ) {
-			if( !( board.hasPlayer1Marker(r, c) && board.hasPlayer2Marker(r, c) ) ) {
+			if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
 				board.setSpot(r, c, p);
 				rr = r;	// Assumes that row is not off edge, will always be set
 				break;
