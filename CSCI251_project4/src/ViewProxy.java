@@ -46,7 +46,6 @@ public class ViewProxy implements ModelListener {
 	 * @param viewListener	The view listener to be set.
 	 */
 	public void setViewListener( ViewListener viewListener ) {
-		System.out.println(this.viewListener==null);
 		if( this.viewListener == null ) {
 			this.viewListener = viewListener;
 			new ReaderThread().start();
