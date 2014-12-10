@@ -26,7 +26,6 @@ public class SessionManager implements ViewListener {
 
 	@Override
 	public synchronized void join( ViewProxy proxy, String session) throws IOException {
-		System.out.printf("%s join<%s> --> server\n", session, session);
 		ConnectFourModel model = sessions.get( numSessions );
 		if( model == null ) {
 			model = new ConnectFourModel();

@@ -51,6 +51,9 @@ public class ViewProxy implements ModelListener {
 			this.viewListener = viewListener;
 			new ReaderThread().start();
 		}//end if
+		else {
+			this.viewListener = viewListener;
+		}//end else
 	}//end setViewListener
 	
 	@Override
