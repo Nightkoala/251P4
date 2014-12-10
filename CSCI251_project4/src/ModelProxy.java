@@ -52,6 +52,7 @@ public class ModelProxy implements ViewListener {
 	
 	@Override
 	public void join( ViewProxy proxy, String n ) throws IOException {
+		System.out.printf("join %s\n", n);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'j' );
