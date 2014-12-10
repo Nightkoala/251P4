@@ -127,14 +127,17 @@ public class ViewProxy implements ModelListener {
 		switch( b ) {
 			case 'j':
 				name = in.readUTF();
+				System.out.printf("join %s\n", name);
 				viewListener.join( ViewProxy.this, name );
 				break;
 			case 'a':
 				p = in.readByte();
 				c = in.readByte();
+				System.out.printf("add %d %d\n", p, c);
 				viewListener.add( p, c );
 				break;
 			case 'c':
+				System.out.println("clear");
 				viewListener.clear();
 				break;
 			default:
