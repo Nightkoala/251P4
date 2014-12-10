@@ -90,53 +90,55 @@ public class ConnectFourModel implements ViewListener {
 				} catch( IOException e ) {}//end try/catch
 			}//end for i
 		}//end if
-		// find r
-		if( !gameWon ) {
-			int rr = -1;
-			for( int r = 5 ; r >= 0 ; r-- ) {
-				if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
-					board.setSpot(r, c, p);
-					rr = r;	// Assumes that row is not off edge, will always be set
-					break;
-				}//end if
-			}//end for r
-			// notify players of board change
-			for( int i = 0 ; i < 2 ; i++ ) {
-				ModelListener listener = listeners[i];
-				try {
-					if( rr != -1 ) {
-						listener.add(p, rr, c);
+		else {
+			// find r
+			if( !gameWon ) {
+				int rr = -1;
+				for( int r = 5 ; r >= 0 ; r-- ) {
+					if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
+						board.setSpot(r, c, p);
+						rr = r;	// Assumes that row is not off edge, will always be set
+						break;
 					}//end if
-				} catch( IOException e ) {}//end try/catch
-			}//end for i
-			
-			// notify players of player turn
-			int[] winner = board.hasWon();
-			// if game over
-			if( winner != null ) {
-				gameWon = true;
+				}//end for r
+				// notify players of board change
 				for( int i = 0 ; i < 2 ; i++ ) {
 					ModelListener listener = listeners[i];
 					try {
-						listener.turn( 0 );
-					} catch ( IOException e ) {}//end try/catch
-				}//end for i
-			}//end if
-			// not game over
-			else if( winner == null ) {
-				for( int i = 0 ; i < 2 ; i++ ) {
-					ModelListener listener = listeners[i];
-					try {
-						if( p == 1 ) {
-							listener.turn( 2 );
+						if( rr != -1 ) {
+							listener.add(p, rr, c);
 						}//end if
-						else if( p == 2 ) {
-							listener.turn( 1 );
-						}//end else if
-					} catch ( IOException e ) {}//end try catch
+					} catch( IOException e ) {}//end try/catch
 				}//end for i
-			}//end else if
-		}//end if
+				
+				// notify players of player turn
+				int[] winner = board.hasWon();
+				// if game over
+				if( winner != null ) {
+					gameWon = true;
+					for( int i = 0 ; i < 2 ; i++ ) {
+						ModelListener listener = listeners[i];
+						try {
+							listener.turn( 0 );
+						} catch ( IOException e ) {}//end try/catch
+					}//end for i
+				}//end if
+				// not game over
+				else if( winner == null ) {
+					for( int i = 0 ; i < 2 ; i++ ) {
+						ModelListener listener = listeners[i];
+						try {
+							if( p == 1 ) {
+								listener.turn( 2 );
+							}//end if
+							else if( p == 2 ) {
+								listener.turn( 1 );
+							}//end else if
+						} catch ( IOException e ) {}//end try catch
+					}//end for i
+				}//end else if
+			}//end if
+		}//end else
 	}//end add
 
 	@Override
