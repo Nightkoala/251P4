@@ -60,10 +60,10 @@ public class ConnectFourModel implements ViewListener {
 		} catch( IOException e ) {}//end try/catch
 	}//end addModelListener
 	
-	public void printBoard() {
+	public static void printBoard( C4Board b) {
 		for( int r = 0 ; r < C4Board.ROWS ; r++ ) {
 			for( int c = 0 ; c < C4Board.COLS ; c++ ) {
-				System.out.printf("%d ", board.getSpot(r, c));
+				System.out.printf("%d ", b.getSpot(r, c));
 			}//end for c
 			System.out.println();
 		}//end for r
@@ -92,6 +92,7 @@ public class ConnectFourModel implements ViewListener {
 		// update board state
 		// find r
 		int rr = -1;
+		printBoard( board );
 		for( int r = 5 ; r >= 0 ; r-- ) {
 			if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
 				board.setSpot(r, c, p);
