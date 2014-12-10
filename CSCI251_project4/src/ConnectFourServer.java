@@ -8,8 +8,7 @@
  */
 
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.DatagramSocket;
 
 public class ConnectFourServer {
 
@@ -40,14 +39,14 @@ public class ConnectFourServer {
 		}//end try/catch
 		port = Integer.parseInt( args[1] );
 		
-		ServerSocket serversocket = new ServerSocket();
-		serversocket.bind( new InetSocketAddress( host, port ) );
-		SessionManager manager = new SessionManager();
+		DatagramSocket mailbox =
+			new DatagramSocket(
+				new InetSocketAddress( host, port ) );
+		
+		MailboxManager manager = new MailboxManager( mailbox );
 		
 		for( ;; ) {
-			Socket socket = serversocket.accept();
-			ViewProxy proxy = new ViewProxy( socket );
-			proxy.setViewListener( manager );
+			manager.receiveMessage();
 		}//end for
 	}//end main
 }//end ConnectFourServer class

@@ -47,4 +47,5 @@ public class SessionManager implements ViewListener {
 
 	@Override
 	public void clear() throws IOException {}//end clear
+
 }//end SessionManager class

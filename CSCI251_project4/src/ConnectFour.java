@@ -9,6 +9,7 @@
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.DatagramSocket;
 
 public class ConnectFour{
 
@@ -17,8 +18,8 @@ public class ConnectFour{
 	 * usage of the program and exists.
 	 */
 	public static void usage() {
-		System.err.println(
-			"Usage: java ConnectFour <host> <port> <playername>" );
+		System.err.printf("Usage: java ConnectFour <serverhost> <serverport> ");
+		System.err.printf("<clienthost> <clientport> <playername>\n");
 		System.exit(1);
 	}//end usage
 	
@@ -32,29 +33,40 @@ public class ConnectFour{
 	 * @throws IOException	Thrown if an I/O error occurred.
 	 */
 	public static void main( String[] args ) throws IOException {
-		if( args.length != 3 ) {
+		if( args.length != 5 ) {
 			usage();
 		}//end if
-		String host = args[0];
-		int port;
+		String serverHost = args[0];
+		String clientHost = args[2];
+		int serverPort, clientPort;
 		try {
-			port = Integer.parseInt( args[1] );
+			serverPort = Integer.parseInt( args[1] );
 		} catch( NumberFormatException e ) {
-			System.err.printf( "<port> must be an int\n" );
+			System.err.printf( "<serverport> must be an int\n" );
 			e.printStackTrace( System.err );
 		}//end try/catch
-		port = Integer.parseInt( args[1] );
-		String playerName = args[2];
+		serverPort = Integer.parseInt( args[1] );
+		try {
+			clientPort = Integer.parseInt( args[3] );
+		} catch( NumberFormatException e ) {
+			System.err.printf( "<clientport> must be an int\n" );
+			e.printStackTrace( System.err );
+		}//end try/catch
+		clientPort = Integer.parseInt( args[3] );
+		String playerName = args[4];
 		
-		Socket socket = new Socket();
-		socket.connect( new InetSocketAddress( host, port ) );
+		DatagramSocket mailbox = new DatagramSocket( new InetSocketAddress( clientHost, clientPort ) );
+		
+//		Socket socket = new Socket();
+//		socket.connect( new InetSocketAddress( host, port ) );
 		
 		C4ModelClone model = new C4ModelClone();
 		C4UI view = new C4UI( model.getBoard(), playerName );
-		ModelProxy proxy = new ModelProxy( socket );
+		final ModelProxy proxy = new ModelProxy( mailbox, new InetSocketAddress( serverHost, serverPort ) );
 		model.setModelListener( view );
 		view.setViewListener( proxy );
 		proxy.setModelListener( model );
+		
 		proxy.join( null, playerName );
 	}//end main
 }//end ConnectFour

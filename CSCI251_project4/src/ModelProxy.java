@@ -7,19 +7,21 @@
  * 		client and communicates with server.
  */
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketAddress;
 
 public class ModelProxy implements ViewListener {
 
 	// Hidden data members
 	
-	private Socket socket;
-	private BufferedReader in;
-	private PrintWriter out;
+	private DatagramSocket mailbox;
+	private SocketAddress destination;
 	private ModelListener modelListener;
 	
 	// Constructor
@@ -31,11 +33,9 @@ public class ModelProxy implements ViewListener {
 	 * 
 	 * @throws IOException	Thrown if an I/O error occurred.
 	 */
-	public ModelProxy( Socket socket ) throws IOException {
-		this.socket = socket;
-		out = new PrintWriter( socket.getOutputStream(), true );
-		in = new BufferedReader(
-			new InputStreamReader( socket.getInputStream() ) );
+	public ModelProxy( DatagramSocket mailbox, SocketAddress destination ) throws IOException {
+		this.mailbox = mailbox;
+		this.destination = destination;
 	}//end ModelProxy constructor
 	
 	// Methods
@@ -52,17 +52,41 @@ public class ModelProxy implements ViewListener {
 	
 	@Override
 	public void join( ViewProxy proxy, String n ) throws IOException {
-		out.printf( "join %s\n", n );
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream( baos );
+		out.writeByte( 'j' );
+		out.writeUTF( n );
+		out.close();
+		byte[] payload = baos.toByteArray();
+		mailbox.send(
+			new DatagramPacket(
+				payload, payload.length, destination ) );
 	}//end join
 
 	@Override
 	public void add( int p, int c ) throws IOException {
-		out.printf( "add %d %d\n", p, c );
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream( baos );
+		out.writeByte( 'a' );
+		out.writeByte( p );
+		out.writeByte( c );
+		out.close();
+		byte[] payload = baos.toByteArray();
+		mailbox.send(
+			new DatagramPacket(
+				payload, payload.length, destination ) );
 	}//end add
 
 	@Override
 	public void clear() throws IOException {
-		out.printf( "clear\n" );
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream( baos );
+		out.writeByte( 'c' );
+		out.close();
+		byte[] payload = baos.toByteArray();
+		mailbox.send(
+			new DatagramPacket(
+				payload, payload.length, destination ) );
 	}//end clear
 	
 	// Hidden helper class
@@ -77,50 +101,49 @@ public class ModelProxy implements ViewListener {
 	 */
 	private class ReaderThread extends Thread {
 		public void run() {
+			byte[] payload = new byte[128];
 			try {
 				for( ;; ) {
+					DatagramPacket packet = 
+						new DatagramPacket( payload, payload.length );
+					mailbox.receive( packet );
+					DataInputStream in =
+						new DataInputStream(
+							new ByteArrayInputStream( payload, 0, packet.getLength() ) );
 					int p, r, c;
 					String n;
-					String cmd = in.readLine();
-					if( cmd == null ) {
-						modelListener.turn( -1 );
-						break;
-					}//end if
-					switch( cmd.charAt( 0 ) ) {
-						case 'n':
-							if( cmd.charAt( 1 ) == 'u' ) {
-								p = Character.getNumericValue(
-									cmd.charAt( 7 ) );
-								modelListener.number( p );
-								break;
-							}//end if
-							p = Character.getNumericValue( cmd.charAt( 5 ) );
-							n = cmd.substring( 7 );
+					byte b = in.readByte();
+					switch( b ) {
+						case 'n':	//number
+							p = in.readByte();
+							modelListener.number( p );
+							break;
+						case 'N':	//name
+							p = in.readByte();
+							n = in.readUTF();
 							modelListener.name( p, n );
 							break;
-						case 't':
-							p = Character.getNumericValue( cmd.charAt( 5 ) );
+						case 't':	//turn
+							p = in.readByte();
 							modelListener.turn( p );
 							break;
-						case 'a':
-							p = Character.getNumericValue( cmd.charAt( 4 ) );
-							r = Character.getNumericValue( cmd.charAt( 6 ) );
-							c = Character.getNumericValue( cmd.charAt( 8 ) );
+						case 'a':	//add
+							p = in.readByte();
+							r = in.readByte();
+							c = in.readByte();
 							modelListener.add( p, r, c );
 							break;
-						case 'c':
+						case 'c':	//clear
 							modelListener.clear();
 							break;
 						default:
-							System.err.println( "Bad message" );
+							System.err.println("Bad message.");
 							break;
 					}//end switch
 				}//end for
 			} catch( IOException e ) {}//end try/catch
 			finally {
-				try {
-					socket.close();
-				} catch( IOException e ) {}//end try/catch
+				mailbox.close();
 			}//end finally
 		}//end run
 	}//end ReaderThread class
