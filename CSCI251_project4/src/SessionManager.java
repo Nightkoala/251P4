@@ -13,13 +13,13 @@ public class SessionManager implements ViewListener {
 	
 	// Hidden Data Members
 	
-	private ArrayList<ConnectFourModel> sessions;
+	private ArrayList<ConnectFourModel> sessions = new ArrayList<ConnectFourModel>();
 	private int numSessions = 0;
 	
 	// Constructor
 	
 	public SessionManager() {
-		this.sessions = new ArrayList<ConnectFourModel>();
+		this.sessions.add(0, null);
 	}//end SessionManager constructor
 	
 	// Methods
