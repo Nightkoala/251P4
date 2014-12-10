@@ -17,12 +17,30 @@ public class ConnectFourModel implements ViewListener {
 	private C4Board board = new C4Board();
 	private LinkedList<ModelListener> listeners =
 		new LinkedList<ModelListener>();
+	private String player1Name = null;
+	private String player2Name = null;
 	
 	// Constructor
 	
 	public ConnectFourModel() {}//end ConnectFourModel constructor
 	
 	// Methods
+	
+	public String getPlayer1Name() {
+		return this.player1Name;
+	}//end getPlayer1Name
+	
+	public String getPlayer2Name() {
+		return this.player2Name;
+	}//end getPlayer2Name
+	
+	public void setPlayer1Name( String n ) {
+		this.player1Name = n;
+	}//end setPlayer1Name
+	
+	public void setPlayer2Name( String n ) {
+		this.player2Name = n;
+	}//end setPlayer2Name
 	
 	public synchronized void addModelListener( ModelListener modelListener ) {
 		try {
