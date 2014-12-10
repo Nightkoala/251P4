@@ -105,8 +105,8 @@ public class ViewProxy implements ModelListener {
 							break;
 						case 'a':
 							System.out.println(cmd);
-							p = Character.getNumericValue( cmd.charAt( 5 ) );
-							c = Character.getNumericValue( cmd.charAt( 7 ) );
+							p = Character.getNumericValue( cmd.charAt( 4 ) );
+							c = Character.getNumericValue( cmd.charAt( 6 ) );
 							viewListener.add( p, c );
 							break;
 						case 'c':
