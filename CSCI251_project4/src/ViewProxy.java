@@ -54,7 +54,7 @@ public class ViewProxy implements ModelListener {
 		System.out.printf("sending -- number %d\n", p);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
-		out.writeByte('N');
+		out.writeByte('n');
 		out.writeByte( p );
 		out.close();
 		byte[] payload = baos.toByteArray();
@@ -68,7 +68,7 @@ public class ViewProxy implements ModelListener {
 		System.out.printf("sending -- name %d %s\n", p, n);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
-		out.writeByte( 'n' );
+		out.writeByte( 'N' );
 		out.writeByte( p );
 		out.writeUTF( n );
 		out.close();
