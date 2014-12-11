@@ -49,5 +49,10 @@ public class SessionManager implements ViewListener {
 	public void clear() throws IOException {}//end clear
 
 	@Override
-	public void leave() throws IOException {}//end leave
+	public void leave() throws IOException {
+		for( int i = 0 ; i <= numSessions ; i++ ) {
+			ConnectFourModel model = sessions.get(numSessions);
+			model.leave();
+		}//end for
+	}//end leave
 }//end SessionManager class

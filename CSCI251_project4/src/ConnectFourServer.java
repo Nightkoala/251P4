@@ -9,6 +9,7 @@
 
 import java.net.InetSocketAddress;
 import java.net.DatagramSocket;
+import java.io.IOException;
 
 public class ConnectFourServer {
 
@@ -43,7 +44,15 @@ public class ConnectFourServer {
 			new DatagramSocket(
 				new InetSocketAddress( host, port ) );
 		
-		MailboxManager manager = new MailboxManager( mailbox );
+		final MailboxManager manager = new MailboxManager( mailbox );
+		
+		Runtime.getRuntime().addShutdownHook( new Thread() {
+			public void run() {
+				try {
+					manager.getSesionManager().leave();
+				} catch( IOException e ) {}//end try/catch
+			}//end run
+		});
 		
 		for( ;; ) {
 			manager.receiveMessage();

@@ -81,7 +81,7 @@ public class ModelProxy implements ViewListener {
 
 	@Override
 	public void clear() throws IOException {
-		System.out.println("Sending -- clear\n");
+		System.out.printf("Sending -- clear\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'c' );
@@ -94,7 +94,7 @@ public class ModelProxy implements ViewListener {
 	
 	@Override
 	public void leave() throws IOException {
-		System.out.println("Sending -- leave\n");
+		System.out.printf("Sending -- leave\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'l' );

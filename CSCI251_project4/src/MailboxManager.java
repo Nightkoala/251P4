@@ -31,6 +31,10 @@ public class MailboxManager {
 	
 	// Methods
 	
+	public SessionManager getSesionManager() {
+		return this.sessionManager;
+	}//end getSessionManager
+	
 	public void receiveMessage() throws IOException {
 		DatagramPacket packet = new DatagramPacket( payload, payload.length );
 		mailbox.receive( packet );
