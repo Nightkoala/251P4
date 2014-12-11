@@ -160,5 +160,12 @@ public class ConnectFourModel implements ViewListener {
 	}//end clear
 
 	@Override
-	public void leave() throws IOException {}//end leave
+	public void leave() throws IOException {
+		for( int i = 0 ; i < 2 ; i++ ) {
+			ModelListener listener = listeners[i];
+			try {
+				listener.turn( -1 );
+			} catch( IOException e) {}//end try/catch
+		}//end for i
+	}//end leave
 }//end ConnectFourModel class

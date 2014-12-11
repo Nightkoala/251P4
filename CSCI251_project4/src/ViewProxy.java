@@ -139,15 +139,17 @@ public class ViewProxy implements ModelListener {
 			case 'a':
 				p = in.readByte();
 				c = in.readByte();
-				System.out.printf("receive --add %d %d\n", p, c);
+				System.out.printf("receive -- add %d %d\n", p, c);
 				viewListener.add( p, c );
 				break;
 			case 'c':
-				System.out.println("receive --clear");
+				System.out.println("receive -- clear");
 				viewListener.clear();
 				break;
 			case 'l':
 				discard = true;
+				System.out.println("receive -- leave");
+				viewListener.leave();
 				break;
 			default:
 				System.err.println( "Bad message." );

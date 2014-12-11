@@ -43,14 +43,10 @@ public class SessionManager implements ViewListener {
 	}//end join
 
 	@Override
-	public void add(int p, int c) throws IOException {
-		System.out.println("I shouldn't be in add");
-	}//end add
+	public void add(int p, int c) throws IOException {}//end add
 
 	@Override
-	public void clear() throws IOException {
-		System.out.println("I shouldn't be in clear");
-	}//end clear
+	public void clear() throws IOException {}//end clear
 
 	@Override
 	public void leave() throws IOException {}//end leave
