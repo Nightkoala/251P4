@@ -124,7 +124,7 @@ public class ModelProxy implements ViewListener {
 						case 'N':	//name
 							p = in.readByte();
 							n = in.readUTF();
-							System.out.printf("name %p %s\n", p, n);
+							System.out.printf("name %d %s\n", p, n);
 							modelListener.name( p, n );
 							break;
 						case 't':	//turn
