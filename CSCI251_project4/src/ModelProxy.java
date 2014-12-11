@@ -52,6 +52,7 @@ public class ModelProxy implements ViewListener {
 	
 	@Override
 	public void join( ViewProxy proxy, String n ) throws IOException {
+		System.out.printf("Sending -- join %s\n", n);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'j' );
@@ -65,6 +66,7 @@ public class ModelProxy implements ViewListener {
 
 	@Override
 	public void add( int p, int c ) throws IOException {
+		System.out.printf("Sending -- add %d %d\n", p, c);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'a' );
@@ -79,6 +81,7 @@ public class ModelProxy implements ViewListener {
 
 	@Override
 	public void clear() throws IOException {
+		System.out.println("Sending -- clear\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'c' );
@@ -91,6 +94,7 @@ public class ModelProxy implements ViewListener {
 	
 	@Override
 	public void leave() throws IOException {
+		System.out.println("Sending -- leave\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'l' );
@@ -128,24 +132,29 @@ public class ModelProxy implements ViewListener {
 					switch( b ) {
 						case 'n':	//number
 							p = in.readByte();
+							System.out.printf("Receive -- number %d\n", p);
 							modelListener.number( p );
 							break;
 						case 'N':	//name
 							p = in.readByte();
 							n = in.readUTF();
+							System.out.printf("Receive -- name %d %s\n", p, n);
 							modelListener.name( p, n );
 							break;
 						case 't':	//turn
 							p = in.readByte();
+							System.out.printf("Receive -- turn %d\n", p);
 							modelListener.turn( p );
 							break;
 						case 'a':	//add
 							p = in.readByte();
 							r = in.readByte();
 							c = in.readByte();
+							System.out.printf("Receive -- add %d %d %d\n", p, r, c);
 							modelListener.add( p, r, c );
 							break;
 						case 'c':	//clear
+							System.out.printf("Receive -- clear\n");
 							modelListener.clear();
 							break;
 						default:

@@ -46,19 +46,7 @@ public class ConnectFourModel implements ViewListener {
 	}//end incNumPlayers
 	
 	public synchronized void addModelListener( ModelListener modelListener ) {
-		try {
-			for( int r = 0 ; r < C4Board.ROWS ; ++r ) {
-				for( int c = 0 ; c < C4Board.COLS ; ++c ) {
-					if( board.hasPlayer1Marker( r, c ) ) {
-						modelListener.add( 1, r, c );
-					}//end if
-					else if( board.hasPlayer2Marker( r, c ) ) {
-						modelListener.add( 2, r, c );
-					}//end else if
-				}//end for c
-			}//end for r
 			listeners[numPlayers] = modelListener;
-		} catch( IOException e ) {}//end try/catch
 	}//end addModelListener
 
 	@Override
