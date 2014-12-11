@@ -123,26 +123,27 @@ public class ViewProxy implements ModelListener {
 	
 	public boolean process( DatagramPacket datagram ) throws IOException {
 		boolean discard = false;
-		DataInputStream in = new DataInputStream(
-			new ByteArrayInputStream(
-				datagram.getData(), 0, datagram.getLength() ) );
+		DataInputStream in =
+			new DataInputStream(
+				new ByteArrayInputStream(
+					datagram.getData(), 0, datagram.getLength() ) );
 		String name;
 		int p, c;
 		byte b = in.readByte();
 		switch( b ) {
 			case 'j':
 				name = in.readUTF();
-				System.out.printf("join %s\n", name);
+				System.out.printf("receive -- join %s\n", name);
 				viewListener.join( ViewProxy.this, name );
 				break;
 			case 'a':
 				p = in.readByte();
 				c = in.readByte();
-				System.out.printf("add %d %d\n", p, c);
+				System.out.printf("receive --add %d %d\n", p, c);
 				viewListener.add( p, c );
 				break;
 			case 'c':
-				System.out.println("clear");
+				System.out.println("receive --clear");
 				viewListener.clear();
 				break;
 			default:
