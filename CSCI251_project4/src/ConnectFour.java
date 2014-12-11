@@ -63,6 +63,14 @@ public class ConnectFour{
 		view.setViewListener( proxy );
 		proxy.setModelListener( model );
 		
+		Runtime.getRuntime().addShutdownHook( new Thread() {
+			public void run() {
+				try {
+					proxy.leave();
+				} catch( IOException e ) {}//end try/catch
+			}//end run
+		});
+		
 		proxy.join( null, playerName );
 	}//end main
 }//end ConnectFour

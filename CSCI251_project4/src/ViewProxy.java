@@ -146,6 +146,9 @@ public class ViewProxy implements ModelListener {
 				System.out.println("receive --clear");
 				viewListener.clear();
 				break;
+			case 'l':
+				discard = true;
+				break;
 			default:
 				System.err.println( "Bad message." );
 				break;

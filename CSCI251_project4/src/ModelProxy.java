@@ -89,6 +89,18 @@ public class ModelProxy implements ViewListener {
 				payload, payload.length, destination ) );
 	}//end clear
 	
+	@Override
+	public void leave() throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream( baos );
+		out.writeByte( 'l' );
+		out.close();
+		byte[] payload = baos.toByteArray();
+		mailbox.send(
+			new DatagramPacket(
+				payload, payload.length, destination ) );
+	}//end leave
+	
 	// Hidden helper class
 	
 	/**
@@ -113,34 +125,27 @@ public class ModelProxy implements ViewListener {
 					int p, r, c;
 					String n;
 					byte b = in.readByte();
-					System.out.println("I made it here");
-					System.out.println(b);
 					switch( b ) {
 						case 'n':	//number
 							p = in.readByte();
-							System.out.printf("number %d\n", p);
 							modelListener.number( p );
 							break;
 						case 'N':	//name
 							p = in.readByte();
 							n = in.readUTF();
-							System.out.printf("name %d %s\n", p, n);
 							modelListener.name( p, n );
 							break;
 						case 't':	//turn
 							p = in.readByte();
-							System.out.printf("turn %d\n", p);
 							modelListener.turn( p );
 							break;
 						case 'a':	//add
 							p = in.readByte();
 							r = in.readByte();
 							c = in.readByte();
-							System.out.printf("add %d %d %d\n", p, r, c);
 							modelListener.add( p, r, c );
 							break;
 						case 'c':	//clear
-							System.out.printf("clear\n");
 							modelListener.clear();
 							break;
 						default:

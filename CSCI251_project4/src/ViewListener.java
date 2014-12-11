@@ -39,4 +39,6 @@ public interface ViewListener {
 	 */
 	public void clear() throws IOException;
 	
+	public void leave() throws IOException;
+	
 }//end ViewListener

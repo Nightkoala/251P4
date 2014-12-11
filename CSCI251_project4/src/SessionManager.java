@@ -52,4 +52,6 @@ public class SessionManager implements ViewListener {
 		System.out.println("I shouldn't be in clear");
 	}//end clear
 
+	@Override
+	public void leave() throws IOException {}//end leave
 }//end SessionManager class
