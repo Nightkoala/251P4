@@ -25,16 +25,33 @@ public class MailboxManager {
 	
 	// Constructor
 	
+	/**
+	 * Constructor for creating an instance of a Mailbox Manager.
+	 * 
+	 * @param mailbox	The DatagramSocket that messages will be delivered to.
+	 */
 	public MailboxManager( DatagramSocket mailbox ) {
 		this.mailbox = mailbox;
 	}//end MailboxManager constructor
 	
 	// Methods
 	
+	/**
+	 * Retrieves the session manager stored within this object, helper method
+	 * used for exiting clients when server unexpectedly closes.
+	 * 
+	 * @return	The session manager.
+	 */
 	public SessionManager getSesionManager() {
 		return this.sessionManager;
 	}//end getSessionManager
 	
+	/**
+	 * Method responsible for retriving messages to be sent back to the clients,
+	 * Determines the correct client to send to and sends the message.
+	 * 
+	 * @throws IOException	Thrown if an IO error occurred.
+	 */
 	public void receiveMessage() throws IOException {
 		DatagramPacket packet = new DatagramPacket( payload, payload.length );
 		mailbox.receive( packet );

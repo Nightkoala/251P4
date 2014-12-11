@@ -39,6 +39,11 @@ public interface ViewListener {
 	 */
 	public void clear() throws IOException;
 	
+	/**
+	 * Send notification to server notifying it that a player has exited
+	 * the game.
+	 * 
+	 * @throws IOException	Thrown if an IO error occurred.
+	 */
 	public void leave() throws IOException;
-	
 }//end ViewListener

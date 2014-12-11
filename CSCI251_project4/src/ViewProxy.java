@@ -51,7 +51,6 @@ public class ViewProxy implements ModelListener {
 	
 	@Override
 	public void number( int p ) throws IOException {
-		System.out.printf("sending -- number %d\n", p);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte('n');
@@ -65,7 +64,6 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void name( int p, String n ) throws IOException {
-		System.out.printf("sending -- name %d %s\n", p, n);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'N' );
@@ -80,7 +78,6 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void turn( int p ) throws IOException {
-		System.out.printf("sending -- turn %d\n", p);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 't' );
@@ -94,7 +91,6 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void add( int p, int r, int c ) throws IOException {
-		System.out.printf("sending -- add %d %d %d\n", p, r, c);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'a' );
@@ -110,7 +106,6 @@ public class ViewProxy implements ModelListener {
 
 	@Override
 	public void clear() throws IOException {
-		System.out.printf("sending -- clear\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream( baos );
 		out.writeByte( 'c' );
@@ -121,6 +116,17 @@ public class ViewProxy implements ModelListener {
 				payload, payload.length, clientAddress ) );
 	}//end clear
 	
+	/**
+	 * Helper function to decode incoming messages from the client and pass them
+	 * to the model.
+	 * 
+	 * @param datagram		The message received.
+	 * 
+	 * @return				true - can remove proxy from game
+	 * 						false - otherwise
+	 * 
+	 * @throws IOException	Thrown if an IO error occurred.
+	 */
 	public boolean process( DatagramPacket datagram ) throws IOException {
 		boolean discard = false;
 		DataInputStream in =
@@ -133,26 +139,21 @@ public class ViewProxy implements ModelListener {
 		switch( b ) {
 			case 'j':
 				name = in.readUTF();
-				System.out.printf("receive -- join %s\n", name);
 				viewListener.join( ViewProxy.this, name );
 				break;
 			case 'a':
 				p = in.readByte();
 				c = in.readByte();
-				System.out.printf("receive -- add %d %d\n", p, c);
 				viewListener.add( p, c );
 				break;
 			case 'c':
-				System.out.println("receive -- clear");
 				viewListener.clear();
 				break;
 			case 'l':
 				discard = true;
-				System.out.println("receive -- leave");
 				viewListener.leave();
 				break;
 			default:
-				System.err.println( "Bad message." );
 				break;
 		}//end switch
 		return discard;

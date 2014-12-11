@@ -14,7 +14,7 @@ public class ConnectFour{
 
 	/**
 	 * If improper number of command line arguments, displays the proper
-	 * usage of the program and exists.
+	 * usage of the program and exits.
 	 */
 	public static void usage() {
 		System.err.printf("Usage: java ConnectFour <serverhost> <serverport> ");
@@ -27,7 +27,8 @@ public class ConnectFour{
 	 * correct and then initializes all necessary objects to run a
 	 * successful game of connect four over a network.
 	 * 
-	 * @param args	Command line arguments: <host> <port> <playername>
+	 * @param args	Command line arguments:
+	 * 		<serverhost> <serverport> <clienthost> <clientport> <playername>
 	 * 
 	 * @throws IOException	Thrown if an I/O error occurred.
 	 */
@@ -54,11 +55,17 @@ public class ConnectFour{
 		clientPort = Integer.parseInt( args[3] );
 		String playerName = args[4];
 		
-		DatagramSocket mailbox = new DatagramSocket( new InetSocketAddress( clientHost, clientPort ) );
+		DatagramSocket mailbox =
+			new DatagramSocket(
+				new InetSocketAddress( clientHost, clientPort ) );
 		
 		C4ModelClone model = new C4ModelClone();
 		C4UI view = new C4UI( model.getBoard(), playerName );
-		final ModelProxy proxy = new ModelProxy( mailbox, new InetSocketAddress( serverHost, serverPort ) );
+		
+		final ModelProxy proxy =
+			new ModelProxy(
+				mailbox, new InetSocketAddress( serverHost, serverPort ) );
+		
 		model.setModelListener( view );
 		view.setViewListener( proxy );
 		proxy.setModelListener( model );

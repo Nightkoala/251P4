@@ -8,6 +8,8 @@
 
 public class C4Board implements C4BoardIntf {
 	
+	// Hidden Data Members
+	
 	private int[][] spot = new int[ROWS][COLS];
 	
 	// Constructor
@@ -29,7 +31,6 @@ public class C4Board implements C4BoardIntf {
 	public synchronized void setSpot( int r, int c, int p ) {
 		spot[r][c] = p;
 	}//end setSpot
-	
 	
 	/**
 	 * Clears the current game board, sets all of the tiles to 0.

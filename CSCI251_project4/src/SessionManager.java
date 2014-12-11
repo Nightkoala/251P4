@@ -13,11 +13,15 @@ public class SessionManager implements ViewListener {
 	
 	// Hidden Data Members
 	
-	private ArrayList<ConnectFourModel> sessions = new ArrayList<ConnectFourModel>();
+	private ArrayList<ConnectFourModel> sessions =
+		new ArrayList<ConnectFourModel>();
 	private int numSessions = 0;
 	
 	// Constructor
 	
+	/**
+	 * Constructor for creating an instance of a session manager.
+	 */
 	public SessionManager() {
 		this.sessions.add(0, null);
 	}//end SessionManager constructor
@@ -25,7 +29,7 @@ public class SessionManager implements ViewListener {
 	// Methods
 
 	@Override
-	public synchronized void join( ViewProxy proxy, String session) throws IOException {
+	public synchronized void join( ViewProxy proxy, String session ) throws IOException {
 		ConnectFourModel model = sessions.get( numSessions );
 		if( model == null ) {
 			model = new ConnectFourModel();
@@ -43,7 +47,7 @@ public class SessionManager implements ViewListener {
 	}//end join
 
 	@Override
-	public void add(int p, int c) throws IOException {}//end add
+	public void add( int p, int c ) throws IOException {}//end add
 
 	@Override
 	public void clear() throws IOException {}//end clear

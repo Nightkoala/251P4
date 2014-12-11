@@ -22,35 +22,69 @@ public class ConnectFourModel implements ViewListener {
 	
 	// Constructor
 	
+	/**
+	 * Constructor for creating an instance of the ConnectFour model.
+	 */
 	public ConnectFourModel() {}//end ConnectFourModel constructor
 	
 	// Methods
 	
+	/**
+	 * Retrieves the name of player one in a game session.
+	 * 
+	 * @return	<String> player 1's name
+	 */
 	public String getPlayer1Name() {
 		return this.player1Name;
 	}//end getPlayer1Name
 	
+	/**
+	 * Retrieves the name of player two in a game session.
+	 * 
+	 * @return	<String> player 2's name
+	 */
 	public String getPlayer2Name() {
 		return this.player2Name;
 	}//end getPlayer2Name
 	
+	/**
+	 * Sets the name of player 1 to be stored in the model.
+	 * 
+	 * @param n	<String> The player's name
+	 */
 	public void setPlayer1Name( String n ) {
 		this.player1Name = n;
 	}//end setPlayer1Name
 	
+	/**
+	 * Sets the name of player 2 to be stored in the model.
+	 * 
+	 * @param n	<String> The player's name
+	 */
 	public void setPlayer2Name( String n ) {
 		this.player2Name = n;
 	}//end setPlayer2Name
+	
+	/**
+	 * Increases the number of players in the current game session,  The max
+	 * value is 2
+	 */
 	public void incNumPlayers() {
 		this.numPlayers++;
 	}//end incNumPlayers
 	
+	/**
+	 * Sets the model listener for this model for communication with the 
+	 * clients.
+	 * 
+	 * @param modelListener	The model listener to be set.
+	 */
 	public synchronized void addModelListener( ModelListener modelListener ) {
 			listeners[numPlayers] = modelListener;
 	}//end addModelListener
 
 	@Override
-	public void join(ViewProxy proxy, String n) throws IOException {
+	public void join( ViewProxy proxy, String n ) throws IOException {
 		if( n == player1Name ) {
 			listeners[0].number( 1 );
 			listeners[0].name( 1, n );
@@ -68,13 +102,13 @@ public class ConnectFourModel implements ViewListener {
 	}//end join
 
 	@Override
-	public void add(int p, int c) throws IOException {
+	public void add( int p, int c ) throws IOException {
 		// update board state
 		if( p == -1 ) {
 			for( int i = 0 ; i < 2 ; i++ ) {
 				ModelListener listener = listeners[i];
 				try {
-					listener.turn(-1);
+					listener.turn( -1 );
 				} catch( IOException e ) {}//end try/catch
 			}//end for i
 		}//end if
@@ -83,8 +117,8 @@ public class ConnectFourModel implements ViewListener {
 			if( !gameWon ) {
 				int rr = -1;
 				for( int r = 5 ; r >= 0 ; r-- ) {
-					if( !( board.hasPlayer1Marker(r, c) || board.hasPlayer2Marker(r, c) ) ) {
-						board.setSpot(r, c, p);
+					if( !( board.hasPlayer1Marker (r, c ) || board.hasPlayer2Marker( r, c ) ) ) {
+						board.setSpot( r, c, p );
 						rr = r;	// Assumes that row is not off edge, will always be set
 						break;
 					}//end if
@@ -94,7 +128,7 @@ public class ConnectFourModel implements ViewListener {
 					ModelListener listener = listeners[i];
 					try {
 						if( rr != -1 ) {
-							listener.add(p, rr, c);
+							listener.add( p, rr, c );
 						}//end if
 					} catch( IOException e ) {}//end try/catch
 				}//end for i
@@ -142,7 +176,7 @@ public class ConnectFourModel implements ViewListener {
 		for( int i = 0 ; i < 2 ; i++ ) {
 			ModelListener listener = listeners[i];
 			try {
-				listener.turn(1);
+				listener.turn( 1 );
 			} catch( IOException e ) {}//end try/catch
 		}//end for i
 	}//end clear
