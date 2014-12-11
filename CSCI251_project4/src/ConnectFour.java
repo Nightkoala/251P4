@@ -58,7 +58,7 @@ public class ConnectFour{
 		
 		C4ModelClone model = new C4ModelClone();
 		C4UI view = new C4UI( model.getBoard(), playerName );
-		ModelProxy proxy = new ModelProxy( mailbox, new InetSocketAddress( serverHost, serverPort ) );
+		final ModelProxy proxy = new ModelProxy( mailbox, new InetSocketAddress( serverHost, serverPort ) );
 		model.setModelListener( view );
 		view.setViewListener( proxy );
 		proxy.setModelListener( model );

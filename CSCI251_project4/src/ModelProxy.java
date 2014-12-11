@@ -114,6 +114,7 @@ public class ModelProxy implements ViewListener {
 					String n;
 					byte b = in.readByte();
 					System.out.println("I made it here");
+					System.out.println(b);
 					switch( b ) {
 						case 'n':	//number
 							p = in.readByte();
